@@ -22,7 +22,9 @@
         </camera>
         <always_on>1</always_on>
         <update_rate>30</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
+        <gz_frame_id>depth_frame</gz_frame_id>
+        <topic>camera/depth</topic>
       </sensor>
     </gazebo>
     <gazebo reference="${prefix}camera_color_frame">
@@ -47,6 +49,8 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>1</visualize>
+        <gz_frame_id>rbg_frame</gz_frame_id>
+        <topic>camera/rgb</topic>
       </sensor>
     </gazebo>
     <gazebo reference="${prefix}camera_left_ir_frame">
@@ -71,6 +75,8 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>0</visualize>
+        <gz_frame_id>ir_frame</gz_frame_id>
+        <topic>camera/ir1</topic>
       </sensor>
     </gazebo>
     <gazebo reference="${prefix}camera_right_ir_frame">
@@ -95,9 +101,19 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>0</visualize>
+        <gz_frame_id>ir_frame</gz_frame_id>
+        <topic>camera/ir2</topic>
       </sensor>
     </gazebo>
+
     <gazebo>
+      <plugin
+        filename="gz-sim-sensors-system"
+        name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+      </plugin>
+    </gazebo>
+    <!-- <gazebo>
       <plugin name="realsense_gazebo_camera" filename="librealsense_gazebo_plugin.so">
         <prefix>camera</prefix>
         <depthUpdateRate>30.0</depthUpdateRate>
@@ -120,8 +136,8 @@
         <pointCloud>true</pointCloud>
         <pointCloudTopicName>depth/color/points</pointCloudTopicName>
         <pointCloudCutoff>0.3</pointCloudCutoff>
-      </plugin>
-    </gazebo>
+      </plugin> 
+    </gazebo> -->
   </xacro:macro>
 
 </robot>
