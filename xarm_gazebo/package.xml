@@ -12,14 +12,17 @@
   <depend>rclcpp</depend>
   <depend>control_toolbox</depend>
   <depend>controller_manager</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
   <depend>gazebo_ros</depend>
+<!--  <depend>gz_ros2</depend>-->
   <depend>xarm_description</depend>
   <depend>xarm_controller</depend>
 
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>gazebo_plugins</exec_depend>
-  <exec_depend>gazebo_ros2_control</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>

@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <xacro:macro name="gz_ros2_control_plugin" params="prefix:='' ros2_control_params:=''">
+
+    <gazebo>
+      <!-- Joint state publisher -->
+      <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>${ros2_control_params}</parameters>
+      </plugin>
+    </gazebo>
+
+  </xacro:macro>
+
   <xacro:macro name="ignition_ros2_control_plugin" params="prefix:='' ros2_control_params:=''">
 
     <gazebo>

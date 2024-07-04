@@ -23,7 +23,7 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>1</visualize>
-        <gz_frame_id>depth_frame</gz_frame_id>
+        <ignition_frame_id>world</ignition_frame_id>
         <topic>camera/depth</topic>
       </sensor>
     </gazebo>
@@ -49,7 +49,7 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>1</visualize>
-        <gz_frame_id>rbg_frame</gz_frame_id>
+        <gz_frame_id>world</gz_frame_id>
         <topic>camera/rgb</topic>
       </sensor>
     </gazebo>
@@ -75,7 +75,7 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>0</visualize>
-        <gz_frame_id>ir_frame</gz_frame_id>
+        <gz_frame_id>world</gz_frame_id>
         <topic>camera/ir1</topic>
       </sensor>
     </gazebo>
@@ -101,7 +101,7 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>0</visualize>
-        <gz_frame_id>ir_frame</gz_frame_id>
+        <gz_frame_id>world</gz_frame_id>
         <topic>camera/ir2</topic>
       </sensor>
     </gazebo>

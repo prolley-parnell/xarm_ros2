@@ -45,7 +45,8 @@ def launch_setup(context, *args, **kwargs):
 
     kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
 
-    ros2_control_plugin = 'gazebo_ros2_control/GazeboSystem'
+    # ros2_control_plugin = 'gazebo_ros2_control/GazeboSystem'
+    ros2_control_plugin = 'ign_ros2_control/IgnitionSystem'
     controllers_name = 'fake_controllers'
     moveit_controller_manager_key = 'moveit_simple_controller_manager'
     moveit_controller_manager_value = 'moveit_simple_controller_manager/MoveItSimpleControllerManager'

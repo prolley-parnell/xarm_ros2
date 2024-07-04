@@ -34,46 +34,60 @@ Modified by: Vinman <vinman.cub@gmail.com>
 #include <control_toolbox/pid.hpp>
 
 // Gazebo includes
-#include <gazebo/common/Plugin.hh>
-#include <gazebo/common/common.hh>
-#include <gazebo/physics/physics.hh>
-#include <gazebo/physics/Model.hh>
-#include <gazebo_ros/node.hpp>
+#include <gz/sim/Model.hh>
+#include <gz/sim/Util.hh>
+#include <gz/sim/System.hh>
 
-namespace gazebo {
-  class GazeboMimicJointPlugin : public ModelPlugin {
-  public:
-    GazeboMimicJointPlugin();
-    virtual ~GazeboMimicJointPlugin() override;
+#include <gz/plugin/Register.hh>
 
-    // Overloaded Gazebo entry point
-    virtual void Load(gazebo::physics::ModelPtr parent, sdf::ElementPtr sdf) override;
+// #include <gazebo/common/common.hh>
+// #include <gz/common.hh>
+#include <gz/physics.hh>
 
-  private:
-    void OnUpdate();
+// #include <ros_gz/node.hpp>
 
-    // Node Handles
-    gazebo_ros::Node::SharedPtr model_nh_;
-    // Pointer to the update event connection
-    gazebo::event::ConnectionPtr update_connection_;
+// namespace gazebo {
+// namespace gz {
+using namespace gz;
+using namespace sim;
+using namespace systems;
 
-    // PID controller if needed
-    std::shared_ptr<control_toolbox::Pid> pid_;
+class GazeboMimicJointPlugin 
+  : public System,
+    public ISystemConfigure,
+    public ISystemPostUpdate{
+public:
+  GazeboMimicJointPlugin();
+  virtual ~GazeboMimicJointPlugin() override;
 
-    // Pointers to the joints
-    physics::JointPtr joint_, mimic_joint_;
+  // Overloaded Gazebo entry point
+  virtual void Load(std::shared_ptr<const gz::sim::Model> parent, sdf::ElementPtr sdf) override;
 
-    // Pointer to the model
-    physics::ModelPtr model_;
+private:
+  void OnUpdate();
 
-    // Parameters
-    std::string joint_name_, mimic_joint_name_;
-    double multiplier_, offset_, sensitiveness_, max_effort_;
-    bool has_pid_;
+  // Node Handles
+  ros_gz::Node::SharedPtr model_nh_;
+  // Pointer to the update event connection
+  gz::event::ConnectionPtr update_connection_;
 
-    std::shared_ptr<rclcpp::Rate> loop_rate_;
-  };
-}
+  // PID controller if needed
+  std::shared_ptr<control_toolbox::Pid> pid_;
+
+  // Pointers to the joints
+  sim::JointPtr joint_, mimic_joint_;
+
+  // Pointer to the model
+  sim::ModelPtr model_;
+
+  // Parameters
+  std::string joint_name_, mimic_joint_name_;
+  double multiplier_, offset_, sensitiveness_, max_effort_;
+  bool has_pid_;
+
+  std::shared_ptr<rclcpp::Rate> loop_rate_;
+};
+
 
 
 #endif

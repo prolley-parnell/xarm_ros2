@@ -20,6 +20,7 @@ from launch.actions import OpaqueFunction
 
     
 def launch_setup(context, *args, **kwargs):
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
     prefix = LaunchConfiguration('prefix', default='')
     hw_ns = LaunchConfiguration('hw_ns', default='xarm')
     limited = LaunchConfiguration('limited', default=False)
@@ -30,8 +31,8 @@ def launch_setup(context, *args, **kwargs):
     add_bio_gripper = LaunchConfiguration('add_bio_gripper', default=False)
     dof = LaunchConfiguration('dof', default=7)
     robot_type = LaunchConfiguration('robot_type', default='xarm')
-    ros2_control_plugin = LaunchConfiguration('ros2_control_plugin', default='gazebo_ros2_control/GazeboSystem')
-    
+    # ros2_control_plugin = LaunchConfiguration('ros2_control_plugin', default='gazebo_ros2_control/GazeboSystem')
+    ros2_control_plugin = LaunchConfiguration('ros2_control_plugin', default='ign_ros2_control/IgnitionSystem')
     add_realsense_d435i = LaunchConfiguration('add_realsense_d435i', default=False)
     add_d435i_links = LaunchConfiguration('add_d435i_links', default=True)
     model1300 = LaunchConfiguration('model1300', default=False)
@@ -120,7 +121,7 @@ def launch_setup(context, *args, **kwargs):
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        output='screen',
+        output='both',
         parameters=[{'use_sim_time': True}, robot_description],
         remappings=[
             ('/tf', 'tf'),
@@ -131,8 +132,10 @@ def launch_setup(context, *args, **kwargs):
     # gazebo launch
     # gazebo_ros/launch/gazebo.launch.py
     xarm_gazebo_world = PathJoinSubstitution([FindPackageShare('xarm_gazebo'), 'worlds', 'table.world'])
-    gazebo_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare('gazebo_ros'), 'launch', 'gazebo.launch.py'])),
+
+    gz_sim = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
         launch_arguments={
             'world': xarm_gazebo_world,
             'server_required': 'true',
@@ -142,13 +145,14 @@ def launch_setup(context, *args, **kwargs):
 
     # gazebo spawn entity node
     gazebo_spawn_entity_node = Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
+        package="ros_gz_sim",
+        executable="create",
         output='screen',
         arguments=[
             '-topic', 'robot_description',
             # '-entity', '{}{}'.format(robot_type.perform(context), dof.perform(context) if robot_type.perform(context) in ('xarm', 'lite') else ''),
             '-entity', 'UF_ROBOT',
+            '-name', 'xArm',
             '-x', '-0.2',
             '-y', '-0.54' if robot_type.perform(context) == 'uf850' else '-0.5',
             '-z', '1.021',
@@ -156,6 +160,7 @@ def launch_setup(context, *args, **kwargs):
         ],
         parameters=[{'use_sim_time': True}],
     )
+
 
     # Load controllers
     controllers = [
@@ -188,13 +193,15 @@ def launch_setup(context, *args, **kwargs):
                     on_exit=load_controllers,
                 )
             ),
-            gazebo_launch,
+            # gazebo_launch,
+            gz_sim,
             robot_state_publisher_node,
             gazebo_spawn_entity_node,
         ]
     else:
         return [
-            gazebo_launch,
+            #gazebo_launch,
+            gz_sim,
             robot_state_publisher_node,
             gazebo_spawn_entity_node,
         ]
