@@ -20,6 +20,7 @@
     load_gazebo_plugin:=false 
     add_realsense_d435i:=false
     add_d435i_links:=true
+    add_dual_realsense:=false
     use_gazebo_camera:=false
     add_other_geometry:=false 
     geometry_type:='box'
@@ -210,23 +211,45 @@
       </xacro:unless>
     </xacro:unless>
 
-<!--    <xacro:if value="${add_realsense_d435i}">-->
-<!--      &lt;!&ndash; (xarm) Load RealSense D435i URDF &ndash;&gt;-->
-<!--      <xacro:include filename="$(find xarm_description)/urdf/camera/realsense_d435i.urdf.xacro" />-->
-<!--      <xacro:d435i_urdf prefix="${prefix}" add_d435i_links="${add_d435i_links}" />-->
-<!--      <xacro:if value="${add_d435i_links}">-->
-<!--        <xacro:include filename="$(find xarm_description)/urdf/camera/realsense.gazebo.xacro" />    -->
-<!--        <xacro:realsense_gazebo prefix="${prefix}" />-->
-<!--      </xacro:if>-->
-<!--    </xacro:if>-->
     <xacro:if value="${add_realsense_d435i}">
+      <gazebo>
+        <plugin
+          filename="gz-sim-sensors-system"
+          name="gz::sim::systems::Sensors">
+          <render_engine>ogre2</render_engine>
+        </plugin>
+      </gazebo>
       <!-- (xarm) Load RealSense D435i URDF -->
       <xacro:include filename="$(find xarm_description)/urdf/camera/realsense_d435i.urdf.xacro" />
-      <xacro:d435i_urdf prefix="${prefix}" add_d435i_links="${add_d435i_links}" />
-      <xacro:if value="${add_d435i_links}">
-        <xacro:include filename="$(find xarm_description)/urdf/camera/realsense.gazebo.xacro" />
-        <xacro:realsense_gazebo prefix="${prefix}" />
+      <!-- add two sensors -->
+      <xacro:if value="${add_dual_realsense}">
+        <!--  Add Left Camera-->
+        <xacro:d435i_urdf prefix="${prefix}left_" add_d435i_links="${add_d435i_links}"/>
+        <xacro:d435i_urdf prefix="${prefix}right_" add_d435i_links="${add_d435i_links}"/>
+        <xacro:if value="${add_d435i_links}">
+          <xacro:include filename="$(find xarm_description)/urdf/camera/realsense.gazebo.xacro" />
+          <xacro:realsense_gazebo prefix="${prefix}left_" />
+          <xacro:realsense_gazebo prefix="${prefix}right_" />
+          <link name="${prefix}link_eef"/>
+          <joint name="${prefix}eef_left_camera" type="fixed">
+          <origin xyz="0 0 0" rpy="0 0 -1.2" />
+          <parent link="${prefix}link_eef" />
+          <child link="${prefix}left_link_eef" />
+          </joint>
+          <joint name="${prefix}eef_right_camera" type="fixed">
+          <origin xyz="0 0 0.004" rpy="0 0 1.2" />
+          <parent link="${prefix}link_eef" />
+          <child link="${prefix}right_link_eef" />
+          </joint>
+        </xacro:if>
       </xacro:if>
+      <xacro:unless value="${add_dual_realsense}">
+        <xacro:d435i_urdf prefix="${prefix}" add_d435i_links="${add_d435i_links}" />
+        <xacro:if value="${add_d435i_links}">
+          <xacro:include filename="$(find xarm_description)/urdf/camera/realsense.gazebo.xacro" />
+          <xacro:realsense_gazebo prefix="${prefix}" />
+        </xacro:if>
+      </xacro:unless>
     </xacro:if>
     <xacro:unless value="${add_realsense_d435i}">
       <link name="${prefix}link_eef"/>
@@ -236,7 +259,7 @@
       <parent link="${prefix}link${dof}" />
       <child link="${prefix}link_eef" />
     </joint>
-    
+
     <xacro:if value="${add_gripper}">
       <xacro:if value="${robot_type == 'lite'}">
         <!-- Load Lite Gripper Model URDF -->
