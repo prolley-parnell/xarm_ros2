@@ -231,15 +231,22 @@
           <xacro:realsense_gazebo prefix="${prefix}left_" />
           <xacro:realsense_gazebo prefix="${prefix}right_" />
           <link name="${prefix}link_eef"/>
-          <joint name="${prefix}eef_left_camera" type="fixed">
-          <origin xyz="0 0 0" rpy="0 0 -1.2" />
-          <parent link="${prefix}link_eef" />
+          <joint name="${prefix}arm_left_camera" type="fixed">
+          <origin xyz="0 0 00.0035" rpy="0 0 -1.2" />
+<!--          <parent link="${prefix}link_eef" />-->
+          <parent link="${prefix}link${dof}" />
           <child link="${prefix}left_link_eef" />
           </joint>
-          <joint name="${prefix}eef_right_camera" type="fixed">
-          <origin xyz="0 0 0.004" rpy="0 0 1.2" />
-          <parent link="${prefix}link_eef" />
+          <joint name="${prefix}left_right_camera" type="fixed">
+          <origin xyz="0 0 0.0035" rpy="0 0 2.4" />
+<!--          <parent link="${prefix}link_eef" />-->
+          <parent link="${prefix}left_link_eef" />
           <child link="${prefix}right_link_eef" />
+          </joint>
+          <joint name="${prefix}right_camera_eef" type="fixed">
+          <origin xyz="0 0 0.0035" rpy="0 0 -1.20" />
+          <parent link="${prefix}right_link_eef" />
+          <child link="${prefix}link_eef" />
           </joint>
         </xacro:if>
       </xacro:if>
@@ -251,14 +258,23 @@
         </xacro:if>
       </xacro:unless>
     </xacro:if>
-    <xacro:unless value="${add_realsense_d435i}">
+<!--    <xacro:unless value="${add_realsense_d435i}">-->
+<!--      <link name="${prefix}link_eef"/>-->
+<!--    </xacro:unless>-->
+<!--    <joint name="${prefix}joint_eef" type="fixed">-->
+<!--      <origin xyz="0 0 0" rpy="0 0 0" />-->
+<!--      <parent link="${prefix}link${dof}" />-->
+<!--      <child link="${prefix}link_eef" />-->
+<!--    </joint>    -->
+  <xacro:unless value="${add_realsense_d435i}">
       <link name="${prefix}link_eef"/>
-    </xacro:unless>
-    <joint name="${prefix}joint_eef" type="fixed">
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <parent link="${prefix}link${dof}" />
-      <child link="${prefix}link_eef" />
-    </joint>
+      <joint name="${prefix}joint_eef" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="${prefix}link${dof}" />
+        <child link="${prefix}link_eef" />
+      </joint>
+  </xacro:unless>
+
 
     <xacro:if value="${add_gripper}">
       <xacro:if value="${robot_type == 'lite'}">

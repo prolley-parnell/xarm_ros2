@@ -17,19 +17,12 @@
 #ifndef _GZRS_PLUGIN_HH_
 #define _GZRS_PLUGIN_HH_
 
-#include <gz/sim/Model.hh>
-#include <gz/sim/Util.hh>
-#include <gz/sim/System.hh>
-#include <gz/plugin/Register.hh>
-
-// #include <gazebo/common/common.hh>
-#include <gz/common.hh>
-#include <gz/physics.hh>
-// #include <gazebo/physics/physics.hh>
-// #include <gz/rendering/DepthCamera.hh>
-#include <gz/rendering.hh
-// #include <gazebo/sensors/sensors.hh>
-#include <gz/sensors.hh>
+#include <gazebo/common/Plugin.hh>
+#include <gazebo/common/common.hh>
+#include <gazebo/physics/PhysicsTypes.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/rendering/DepthCamera.hh>
+#include <gazebo/sensors/sensors.hh>
 #include <sdf/sdf.hh>
 
 #include <memory>

@@ -13,8 +13,10 @@ sensor_msgs::msg::CameraInfo cameraInfo(
 
 namespace gazebo
 {
-// Register the plugin
-GZ_REGISTER_MODEL_PLUGIN(GazeboRosRealsense)
+
+////// Register the plugin
+//GZ_REGISTER_MODEL_PLUGIN(GazeboRosRealsense)
+
 
 GazeboRosRealsense::GazeboRosRealsense()
 {
@@ -253,6 +255,9 @@ void GazeboRosRealsense::OnNewDepthFrame()
     this->pointcloud_pub_->publish(this->pointcloud_msg_);
   }
 }
+
+//// Register the plugin
+GZ_REGISTER_MODEL_PLUGIN(GazeboRosRealsense)
 }
 
 namespace

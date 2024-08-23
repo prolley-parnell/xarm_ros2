@@ -12,7 +12,7 @@
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>1</far>
           </clip>
           <noise>
             <type>gaussian</type>
@@ -39,7 +39,7 @@
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>1</far>
           </clip>
           <noise>
             <type>gaussian</type>
@@ -64,7 +64,7 @@
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>1</far>
           </clip>
           <noise>
             <type>gaussian</type>
@@ -89,7 +89,7 @@
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>1</far>
           </clip>
           <noise>
             <type>gaussian</type>
@@ -105,7 +105,7 @@
     </gazebo>
 
 
-    <!-- <gazebo>
+    <gazebo>
       <plugin name="realsense_gazebo_camera" filename="librealsense_gazebo_plugin.so">
         <prefix>camera</prefix>
         <depthUpdateRate>30.0</depthUpdateRate>
@@ -128,8 +128,8 @@
         <pointCloud>true</pointCloud>
         <pointCloudTopicName>depth/color/points</pointCloudTopicName>
         <pointCloudCutoff>0.3</pointCloudCutoff>
-      </plugin> 
-    </gazebo> -->
+      </plugin>
+    </gazebo>
   </xacro:macro>
 
 </robot>
